@@ -9,7 +9,6 @@ class Game {
 
 private:
     SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
     int windowWidth = -1;
     int windowHeight = -1;
     bool run = true;
@@ -25,6 +24,8 @@ public:
     void render();
     void clean();
     bool isRunning();
+
+    static SDL_Renderer *renderer;
 };
 
 #endif

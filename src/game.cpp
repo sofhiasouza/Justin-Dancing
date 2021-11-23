@@ -1,4 +1,12 @@
 #include "../include/game.h"
+#include "../include/command.h"
+
+
+Command* command; //vetor?
+
+SDL_Renderer* Game::renderer = nullptr;
+
+SDL_Texture* player1;
 
 Game::Game(){
 
@@ -32,6 +40,19 @@ void Game::init(const char *title, int width, int height){
         exit(-1);
     }
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    //Pega um comando aleatorio
+    const char* image;
+    int i = rand()%4;
+
+    if(i == 0) image = "images/arrow.png";
+    else if(i == 1) image = "images/arrow1.png";
+    else if(i == 2) image = "images/arrow2.png";
+    else image = "images/arrow3.png";
+
+    command = new Command(i, image);
+
+
 }
 
 void Game::handleEvent(){
@@ -51,12 +72,13 @@ void Game::handleEvent(){
 
 void Game::update(){
 
+    command->update();
 }
 
 void Game::render(){
 
     SDL_RenderClear(renderer);
-    //here is stuff to render
+    command->render();
     SDL_RenderPresent(renderer);
 }
 
