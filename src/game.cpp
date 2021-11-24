@@ -1,12 +1,10 @@
 #include "../include/game.h"
-#include "../include/command.h"
-
-
-Command* command; //vetor?
 
 SDL_Renderer* Game::renderer = nullptr;
 
 SDL_Texture* player1;
+
+SDL_Event Game::event;
 
 Game::Game(){
 
@@ -41,25 +39,34 @@ void Game::init(const char *title, int width, int height){
     }
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    //Pega um comando aleatorio
-    const char* image;
-    int i = rand()%4;
+    commands.push_back(Command::generateCommand());
 
-    if(i == 0) image = "images/arrow.png";
-    else if(i == 1) image = "images/arrow1.png";
-    else if(i == 2) image = "images/arrow2.png";
-    else image = "images/arrow3.png";
-
-    command = new Command(i, image);
-
-
+    players = new Players();
 }
 
 void Game::handleEvent(){
 
-    SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type){
+        case SDL_QUIT:
+            run = false;
+            break;
+
+        case(SDL_KEYDOWN):
+
+            switch(event.key.keysym.sym)
+            {
+                case SDLK_ESCAPE:
+                    run = false;
+                    break;
+            }
+
+            break;
+        default:
+            break;
+    }
+
+     switch (event.type){
         case SDL_QUIT:
             run = false;
             break;
@@ -67,18 +74,37 @@ void Game::handleEvent(){
         default:
             break;
     }
-
 }
 
-void Game::update(){
+void Game::update(int frameCounter){
 
-    command->update();
+    if(frameCounter % 120 == 0) commands.push_back(Command::generateCommand());
+
+    if(frameCounter % 2 == 0){
+        // Movimenta comandos
+        for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
+            (*commandsIterator)->update();
+        
+        // Exclui comandos que sairam da tela
+        if((*commands.begin())->actualState == DESTROY)
+          commands.erase(commands.begin()); 
+    }
+
+
+    // IMPLEMENTAR THREADS AQUI
+    // teste input
+    if(players->keyInputP1(event) ==  W) cout << "UP" << endl; 
+    players->keyInputP2(event);
+
 }
 
 void Game::render(){
 
     SDL_RenderClear(renderer);
-    command->render();
+
+    for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
+        (*commandsIterator)->render();
+
     SDL_RenderPresent(renderer);
 }
 

@@ -1,5 +1,7 @@
 #include "../include/texture.h"
 
+#include "../include/game.h"
+
 SDL_Texture* Texture::loadTexture(const char* path){
 
     //carrega a imagem pra texture

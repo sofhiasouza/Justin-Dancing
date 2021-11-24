@@ -5,10 +5,12 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 640
 
-const int FPS = 60;
+const int FPS = 240;
 const int frameDelay = 1000/FPS;
 
 Uint32 frameStart;
+int frameCounter;
+
 int frameTime;
 
 Game *game = nullptr;
@@ -26,15 +28,18 @@ int main() {
 
         //Tempo desde a inicializacao do SDL
         frameStart = SDL_GetTicks();
+        frameCounter++;
+        frameCounter %= 6000; // zera a cada 100 segundos
 
         game->handleEvent();
-        game->update();
+        game->update(frameCounter);
         game->render();
+
 
         //Duração do frame
         frameTime = SDL_GetTicks() - frameStart;
     
-        //Gera um delay para que o tempo entre os frames não seja tão curto
+        ////Gera um delay para que o tempo entre os frames não seja tão curto
         if(frameDelay > frameTime){
             SDL_Delay(frameDelay - frameTime);
         }
