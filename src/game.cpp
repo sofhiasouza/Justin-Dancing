@@ -40,7 +40,7 @@ void Game::init(const char *title, int width, int height){
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     commands.push_back(Command::generateCommand());
-
+    targetCommandIterator = commands.begin();
     players = new Players();
 }
 
@@ -78,7 +78,7 @@ void Game::handleEvent(){
 
 void Game::update(int frameCounter){
 
-    if(frameCounter % 120 == 0) commands.push_back(Command::generateCommand());
+    if(frameCounter % 600 == 0) commands.push_back(Command::generateCommand());
 
     if(frameCounter % 2 == 0){
         // Movimenta comandos
@@ -91,16 +91,28 @@ void Game::update(int frameCounter){
     }
 
 
-    // IMPLEMENTAR THREADS AQUI
-    // teste input
-    if(players->keyInputP1(event) ==  W) cout << "UP" << endl; 
-    players->keyInputP2(event);
-
+    if((*targetCommandIterator)->actualState == TARGET)
+    {
+        // IMPLEMENTAR THREADS AQUI
+        players->tryMatchP1(event,(*targetCommandIterator));
+        players->tryMatchP2(event,(*targetCommandIterator));
+    }
+    else if((*targetCommandIterator)->actualState == INVALID)
+    {
+        targetCommandIterator++;
+    }
 }
 
 void Game::render(){
+    
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(renderer);    
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    
+    SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)-64, 0, (WINDOW_WIDTH/2)-64, 50);
+    SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)+64, 0, (WINDOW_WIDTH/2)+64, 50);
 
     for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
         (*commandsIterator)->render();

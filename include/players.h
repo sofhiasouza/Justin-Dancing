@@ -4,7 +4,7 @@
 #include "SDL2/SDL.h"
 #include <stdio.h>
 #include <iostream>
-
+#include "command.h"
 
 using namespace std;
 
@@ -24,16 +24,20 @@ enum keys
 class Players {
 
 private:
-    int pointsP1;
-    int pointsP2;
+    
 
 
 public:
     Players();
     ~Players();
-
+    int pointsP1;
+    int pointsP2;
     keys keyInputP1(SDL_Event event);
     keys keyInputP2(SDL_Event event);
+    void tryMatchP1(SDL_Event event, Command* actualCommand);
+    void tryMatchP2(SDL_Event event, Command* actualCommand);
+
+
 };
 
 #endif

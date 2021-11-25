@@ -8,24 +8,33 @@
 #include "SDL2/SDL_image.h"
 #include "sprite.h"
 #include <string>
+#include <iostream>
 
 class Texture;
 
 enum state
 {
     VALID,
-    PAYER1,
-    PLAYER2,
+    TARGET,
     INVALID,
     DESTROY
+};
+
+enum position
+{
+    POS_UP,
+    POS_DOWN,
+    POS_LEFT,
+    POS_RIGHT
 };
 
 class Command: private Sprite{
 private:
     int startTime;
-    int value;
+    
 
 public:
+    position value;
     state actualState;
 
     Command(int value, const char* path);
@@ -33,6 +42,7 @@ public:
     static Command* generateCommand();
     void render();
     void update();
+    void target();
     void destroy();
 
 };

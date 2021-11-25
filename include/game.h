@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
-#include "command.h"
 #include "players.h"
 
 using namespace std;
