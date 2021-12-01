@@ -40,14 +40,9 @@ void Command::update(pthread_mutex_t mutex){
    destRect.w = srcRect.w * 2;
    destRect.h = srcRect.h * 2;
 
-   //Entrando na região crítica
-   pthread_mutex_lock(&mutex);
-   
    target();
    destroy();
 
-   // Saindo da região crítica
-   pthread_mutex_unlock(&mutex);
 }
 
 void Command::target(){

@@ -84,12 +84,13 @@ void Game::update(int frameCounter){
     if(frameCounter % 600 == 0) commands.push_back(Command::generateCommand());
 
     if(frameCounter % 2 == 0){
+
+        //Entrando na região crítica
+        pthread_mutex_lock(&mutex);
+
         // Movimenta comandos
         for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
             (*commandsIterator)->update(mutex);
-        
-        //Entrando na região crítica
-        pthread_mutex_lock(&mutex);
 
         // Exclui comandos que sairam da tela
         if((*commands.begin())->actualState == DESTROY)
