@@ -32,10 +32,10 @@ public:
     ~Players();
     int pointsP1;
     int pointsP2;
-    keys keyInputP1(SDL_Event event);
-    keys keyInputP2(SDL_Event event);
-    void tryMatchP1(SDL_Event event, Command* actualCommand);
-    void tryMatchP2(SDL_Event event, Command* actualCommand);
+    keys keyInputP1(int movement);
+    keys keyInputP2(int movement);
+    void tryMatchP1(int movement, Command* actualCommand);
+    void tryMatchP2(int movement, Command* actualCommand);
 
 
 };

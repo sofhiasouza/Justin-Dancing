@@ -42,6 +42,9 @@ void Game::init(const char *title, int width, int height){
     commands.push_back(Command::generateCommand());
     targetCommandIterator = commands.begin();
     players = new Players();
+
+    // Inicializando mutex
+    pthread_mutex_init(&mutex, NULL);
 }
 
 void Game::handleEvent(){
@@ -83,24 +86,30 @@ void Game::update(int frameCounter){
     if(frameCounter % 2 == 0){
         // Movimenta comandos
         for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
-            (*commandsIterator)->update();
+            (*commandsIterator)->update(mutex);
         
+        //Entrando na região crítica
+        pthread_mutex_lock(&mutex);
+
         // Exclui comandos que sairam da tela
         if((*commands.begin())->actualState == DESTROY)
           commands.erase(commands.begin()); 
+  
+        // Saindo da região crítica
+        pthread_mutex_unlock(&mutex);
     }
+}
 
-
+void Game::tryMatchCommand(int movement){
     if((*targetCommandIterator)->actualState == TARGET)
     {
-        // IMPLEMENTAR THREADS AQUI
-        players->tryMatchP1(event,(*targetCommandIterator));
-        players->tryMatchP2(event,(*targetCommandIterator));
+        players->tryMatchP1(movement,(*targetCommandIterator));
+        players->tryMatchP2(movement,(*targetCommandIterator));
     }
     else if((*targetCommandIterator)->actualState == INVALID)
     {
         targetCommandIterator++;
-    }
+    }  
 }
 
 void Game::render(){
@@ -127,6 +136,9 @@ void Game::clean(){
 
     window = nullptr;
     renderer = nullptr;
+
+    // Destruindo mutex
+    pthread_mutex_destroy(&mutex);
 
     SDL_Quit();
 }

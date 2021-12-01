@@ -26,7 +26,7 @@ void Command::render(){
     Sprite::render();
 }
 
-void Command::update(){
+void Command::update(pthread_mutex_t mutex){
    
    x++;
 
@@ -40,8 +40,14 @@ void Command::update(){
    destRect.w = srcRect.w * 2;
    destRect.h = srcRect.h * 2;
 
+   //Entrando na região crítica
+   pthread_mutex_lock(&mutex);
+   
    target();
    destroy();
+
+   // Saindo da região crítica
+   pthread_mutex_unlock(&mutex);
 }
 
 void Command::target(){

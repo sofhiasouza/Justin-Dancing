@@ -6,6 +6,7 @@
 #include <iostream>
 #include <list>
 #include "players.h"
+#include <pthread.h>
 
 using namespace std;
 
@@ -21,10 +22,14 @@ private:
     list<Command*>::iterator commandsIterator;    
     list<Command*>::iterator targetCommandIterator;
 
-    Players* players;
 
 public:
     list<Command*> commands; 
+
+    // Mutex de acesso à variável actualState dos comandos
+    pthread_mutex_t mutex;
+
+    Players* players;
 
     Game();
     ~Game();
@@ -36,6 +41,7 @@ public:
     void render();
     void clean();
     bool isRunning();
+    void tryMatchCommand(int movement);
 
     static SDL_Renderer *renderer;
     static SDL_Event event;

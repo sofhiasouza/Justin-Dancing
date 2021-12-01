@@ -12,62 +12,60 @@ Players::~Players(){
 
 }
 
-keys Players::keyInputP1(SDL_Event event){
+keys Players::keyInputP1(int movement){
 
-    if(event.type == SDL_KEYDOWN)
+
+    switch(movement)
     {
-        switch(event.key.keysym.sym)
-        {
-            case SDLK_w:
-                return W;
-                break;
+        case SDL_SCANCODE_W:
+            return W;
+            break;
 
-            case SDLK_a:
-                return A;
-                break;
+        case SDL_SCANCODE_A:
+            return A;
+            break;
 
-            case SDLK_s:
-                return S;
-                break;
+        case SDL_SCANCODE_S:
+            return S;
+            break;
 
-            case SDLK_d:
-                return D;
-                break;
-        }
-    }
-    return NONE;
-}
-
-keys Players::keyInputP2(SDL_Event event){
-
-    if(event.type == SDL_KEYDOWN)
-    {
-        switch(event.key.keysym.sym)
-        {
-            case SDLK_UP:
-                return UP;
-                break;
-
-            case SDLK_DOWN:
-                return DOWN;
-                break;
-
-            case SDLK_LEFT:
-                return LEFT;
-                break;
-
-            case SDLK_RIGHT:
-                return RIGHT;
-                break;  
-        }
+        case SDL_SCANCODE_D:
+            return D;
+            break;
     }
 
     return NONE;
 }
 
-void Players::tryMatchP1(SDL_Event event, Command* actualCommand){
+keys Players::keyInputP2(int movement){
 
-    keys keyPressedP1 = keyInputP1(event);
+
+    switch(movement)
+    {
+        case SDL_SCANCODE_UP:
+            return UP;
+            break;
+
+        case SDL_SCANCODE_DOWN:
+            return DOWN;
+            break;
+
+        case SDL_SCANCODE_LEFT:
+            return LEFT;
+            break;
+
+        case SDL_SCANCODE_RIGHT:
+            return RIGHT;
+            break;  
+    }
+
+
+    return NONE;
+}
+
+void Players::tryMatchP1(int movement, Command* actualCommand){
+
+    keys keyPressedP1 = keyInputP1(movement);
 
     switch(actualCommand->value)
     {
@@ -110,18 +108,18 @@ void Players::tryMatchP1(SDL_Event event, Command* actualCommand){
 
 }
 
-void Players::tryMatchP2(SDL_Event event, Command* actualCommand){
+void Players::tryMatchP2(int movement, Command* actualCommand){
 
-   keys keyPressedP2 = keyInputP2(event);
+   keys keyPressedP2 = keyInputP2(movement);
 
     switch(actualCommand->value)
     {
         case POS_UP:
             if(keyPressedP2 == UP)
             {
+                pointsP2++;  
                 actualCommand->actualState = INVALID;
                 cout<<pointsP1 << " " << pointsP2 << endl;
-                pointsP2++;  
             } 
             break;
 

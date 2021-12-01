@@ -41,7 +41,7 @@ public:
 
     static Command* generateCommand();
     void render();
-    void update();
+    void update(pthread_mutex_t mutex);
     void target();
     void destroy();
 
