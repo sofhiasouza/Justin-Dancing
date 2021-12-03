@@ -8,7 +8,9 @@ class Texture {
 
 public:
     static SDL_Texture* loadTexture(const char *path);
+    static SDL_Texture* loadJustinTexture(const char* path);
     static void render(SDL_Texture *tex, SDL_Rect src, SDL_Rect dest);
+    static void renderJustin(SDL_Texture *tex);
 
 };
 

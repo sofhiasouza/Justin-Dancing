@@ -15,11 +15,13 @@ private:
     int x;
     int y;
     SDL_Rect srcRect, destRect;
+    SDL_Rect rect;
     SDL_Texture *texture;
+    SDL_Texture *texture2;
 
 public:
     Sprite();
-    Sprite(const char* path);
+    Sprite(const char* path, const char *path2);
 
     void render();
     bool update();

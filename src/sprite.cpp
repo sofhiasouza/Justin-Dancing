@@ -5,15 +5,17 @@ Sprite::Sprite(){
     y = 0;    
 }
 
-Sprite::Sprite(const char* path){
+Sprite::Sprite(const char* path, const char* path2){
     
     texture = Texture::loadTexture(path);
+    texture2 = Texture::loadJustinTexture(path2);
     x = 0;
     y = 0;
 }
 
 void Sprite::render(){
     Texture::render(texture, srcRect, destRect);
+    Texture::renderJustin(texture2);
 }
 
 void Sprite::setX(int x){

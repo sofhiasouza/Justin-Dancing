@@ -37,7 +37,7 @@ public:
     position value;
     state actualState;
 
-    Command(int value, const char* path);
+    Command(int value, const char* path, const char* path2);
 
     static Command* generateCommand();
     void render();
