@@ -23,4 +23,5 @@ Conforme o jogo roda, setas vermelhas (mostradas na imagem acima) irão aparecer
 
 
 ### Sobre a implementação
-Feito em linguagem `c++` a lógica do jogo foi implementada utilizando amplamente o conceito de *threads*, com o auxílio da biblioteca **pthread.h**. 
+Feito em linguagem `c++` a lógica do jogo foi implementada utilizando amplamente o conceito de *threads*, com o auxílio da biblioteca **pthread.h**. Foi implementada uma thread para cada botão (seta para cima, para baixo, para esquerda e para direita) que verificam se a tecla correspondente no teclado foi clicada ou não. Caso clicada, é preciso verificar o estado da variável `actualState` se está como `VALID` e se houve correspondência entre a seta mostrada na tela e clicada pelo jogador. Caso haja o *match*, a variável actualState passa a ser `INVALID`, ou seja, sai da região crítica, e o ponto para o jogador é contabilizado.
+ 
