@@ -15,15 +15,17 @@ private:
     int x;
     int y;
     SDL_Rect srcRect, destRect;
-    SDL_Rect rect;
-    SDL_Texture *texture;
-    SDL_Texture *texture2;
+    SDL_Texture *textureCommands, *textureJ1, *textureJ2, *textureBG;
+
 
 public:
     Sprite();
-    Sprite(const char* path, const char *path2);
+    Sprite(const char* path);
+    Sprite(const char *path2, const char *path3, const char *path4);
 
+    void changeImage(const char* pathCommands);
     void render();
+    void renderEnvironment();
     bool update();
 
     void setX(int x);

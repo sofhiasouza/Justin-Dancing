@@ -22,8 +22,10 @@ private:
     list<Command*>::iterator commandsIterator;    
     list<Command*>::iterator targetCommandIterator;
 
+    TTF_Font *font;
 
 public:
+    Sprite* environment;
     list<Command*> commands; 
 
     // Mutex de acesso à variável actualState dos comandos
@@ -33,9 +35,10 @@ public:
 
     Game();
     ~Game();
+    
+    void outputText(string text, int posX, int posY);
 
     void init(const char* title, int width, int height);
-
     void handleEvent();
     void update(int frameCounter);
     void render();

@@ -2,25 +2,17 @@
 #include <iostream>
 #include <string>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 640
-
 const int FPS = 240;
 const int frameDelay = 1000/FPS;
+const Uint8 *keyboardStateArray = SDL_GetKeyboardState(NULL);
 
 Uint32 frameStart;
 int frameCounter;
-const Uint8 *keyboardStateArray = SDL_GetKeyboardState(NULL);
-
 int frameTime;
-
 Game *game = nullptr;
 
 pthread_t buttonThread[8];
-//int buttonTypes[8] = [SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT, SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D];
 int buttonTypes[8] = {82, 81, 80, 79, 26, 22, 4, 7};
-
-
 
 // Essa função é chamada para processar cada checador em threads distintas
 void *buttonCheckThread(void *arg){
@@ -41,6 +33,10 @@ void *buttonCheckThread(void *arg){
 
             // Saindo da região crítica
             pthread_mutex_unlock(&game->mutex);
+       }
+       else
+       {
+        
        }
 
         //Duração do frame
@@ -78,7 +74,7 @@ void joinButtonThreads(){
     }
 }
 
-int main() {
+int main(){
 
     // Setando semente para a geração de número aleatórios
     srand(time(NULL));

@@ -1,7 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 840
 #define WINDOW_HEIGHT 640
 
 #include "SDL2/SDL.h"
@@ -37,7 +37,8 @@ public:
     position value;
     state actualState;
 
-    Command(int value, const char* path, const char* path2);
+    Command(int value, const char* path);
+    Command(int value, const char* path, const char* path2, const char* path3, const char* path4);
 
     static Command* generateCommand();
     void render();

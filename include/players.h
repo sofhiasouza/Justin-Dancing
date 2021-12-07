@@ -32,6 +32,8 @@ public:
     ~Players();
     int pointsP1;
     int pointsP2;
+    int failuresP1;
+    int failuresP2;
     keys keyInputP1(int movement);
     keys keyInputP2(int movement);
     void tryMatchP1(int movement, Command* actualCommand);
