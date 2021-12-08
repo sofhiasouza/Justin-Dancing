@@ -36,8 +36,8 @@ public:
     int failuresP2;
     keys keyInputP1(int movement);
     keys keyInputP2(int movement);
-    void tryMatchP1(int movement, Command* actualCommand);
-    void tryMatchP2(int movement, Command* actualCommand);
+    int tryMatch(int movement, Command** actualCommand);
+
 
 
 };

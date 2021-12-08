@@ -94,7 +94,7 @@ int main(){
         frameCounter %= 6000; // zera a cada 100 segundos
 
         game->handleEvent();
-        game->update(frameCounter);
+        if(!game->GameOver)game->update(frameCounter);
         game->render();
 
         //Duração do frame

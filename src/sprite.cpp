@@ -14,6 +14,7 @@ Sprite::Sprite(const char* pathCommands){
 }
 
 void Sprite::changeImage(const char* pathCommands){
+    SDL_DestroyTexture(textureCommands);
     textureCommands = Texture::loadTexture(pathCommands);
 }
 

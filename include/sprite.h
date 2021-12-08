@@ -15,10 +15,12 @@ private:
     int x;
     int y;
     SDL_Rect srcRect, destRect;
-    SDL_Texture *textureCommands, *textureJ1, *textureJ2, *textureBG;
+   
+    SDL_Texture *textureJ1, *textureJ2, *textureBG;
 
 
 public:
+    SDL_Texture *textureCommands;
     Sprite();
     Sprite(const char* path);
     Sprite(const char *path2, const char *path3, const char *path4);

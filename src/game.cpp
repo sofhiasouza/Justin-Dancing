@@ -14,7 +14,7 @@ Game::~Game(){
 }
 
 void Game::init(const char *title, int width, int height){
-    
+    GameOver = false;
     // Inicializa SDL
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -39,7 +39,7 @@ void Game::init(const char *title, int width, int height){
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     commands.push_back(Command::generateCommand());
-    environment = new Sprite("assets/J1.png", "assets/J2.jpeg", "assets/background.jpg");
+    environment = new Sprite("assets/J1.png", "assets/J2.jpg", "assets/background.jpg");
     targetCommandIterator = commands.begin();
     players = new Players();
 
@@ -56,13 +56,12 @@ void Game::init(const char *title, int width, int height){
     }
 }
 
-void Game::outputText(string text, int posX, int posY, SDL_Texture **texture)
+void Game::outputText(string text, int posX, int posY, SDL_Texture **texture, SDL_Color color)
 {   
     if (*texture != nullptr) {
         SDL_DestroyTexture(*texture);
         *texture = nullptr;
     }
-    SDL_Color color = {255,255,255,255};
 
     // Criando textura a partir da fonte e do texto dado
     SDL_Surface *text_surface = TTF_RenderText_Solid(font, text.c_str(), color);
@@ -138,24 +137,20 @@ void Game::update(int frameCounter){
           commands.erase(commands.begin()); 
           delete deletedCommand;
         }
-  
-        if((*targetCommandIterator)->actualState == INVALID){
-            targetCommandIterator++;
-        }
 
         // Saindo da região crítica
         pthread_mutex_unlock(&mutex);
-    } 
+    }
 }
 
 void Game::tryMatchCommand(int movement){
+
     if((*targetCommandIterator)->actualState == TARGET)
     {
-        players->tryMatchP1(movement,(*targetCommandIterator));
-        players->tryMatchP2(movement,(*targetCommandIterator));
+        players->tryMatch(movement,&(*targetCommandIterator));
     }
-    else if((*targetCommandIterator)->actualState == INVALID)
-    {
+    if((*targetCommandIterator)->actualState == INVALID)
+    {        
         targetCommandIterator++;
     }  
 }
@@ -170,22 +165,45 @@ void Game::render(){
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     
-    outputText("PLAY! ", (WINDOW_WIDTH/2)-40, WINDOW_HEIGHT-100, &t1);
+    outputText("PLAY! ", (WINDOW_WIDTH/2)-40, WINDOW_HEIGHT-100, &t1, {255,255,255,255});
     SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)-64, WINDOW_HEIGHT-70, (WINDOW_WIDTH/2)-64, WINDOW_HEIGHT-10);
     SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)+64, WINDOW_HEIGHT-70, (WINDOW_WIDTH/2)+64, WINDOW_HEIGHT-10);
 
-    outputText("Justin 1 points: ", 70, 320, &t2);
-    outputText(to_string(players->pointsP1), 180, 350, &t3);
-    outputText("Remaining failures: ", 40, 400, &t4);
-    outputText(to_string(players->failuresP1), 180, 450, &t5);
+    outputText("Justin 1 points: ", 70, 320, &t2, {255,255,255,255});
+    outputText(to_string(players->pointsP1), 180, 360, &t3, {0,255,0,255});
+    outputText("Remaining failures: ", 40, 400, &t4, {255,255,255,255});
+    outputText(to_string(players->failuresP1), 180, 450, &t5, {255,255,255,255});
     
-    outputText("Justin 2 points: ", WINDOW_WIDTH-260, 320, &t6);
-    outputText(to_string(players->pointsP2), WINDOW_WIDTH-100, 350, &t7);
-    outputText("Remaining failures: ", WINDOW_WIDTH-300, 400, &t8);
-    outputText(to_string(players->failuresP2), WINDOW_WIDTH-100, 450, &t9);
+    outputText("Justin 2 points: ", WINDOW_WIDTH-260, 320, &t6, {255,255,255,255});
+    outputText(to_string(players->pointsP2), WINDOW_WIDTH-130, 360, &t7, {0,0,255,255});
+    outputText("Remaining failures: ", WINDOW_WIDTH-300, 400, &t8, {255,255,255,255});
+    outputText(to_string(players->failuresP2), WINDOW_WIDTH-130, 450, &t9, {255,255,255,255});
 
     for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
         (*commandsIterator)->render();
+
+    
+
+    if(players->pointsP1 == 30)
+    {
+        GameOver = true;
+        outputText("Justin 1 WON!", WINDOW_WIDTH/2 - 80, 320, &t10, {255,255,255,255});
+    }
+    else if(players->pointsP2 == 30)
+    {
+        GameOver = true;
+        outputText("Justin 2 WON!", WINDOW_WIDTH/2 - 80, 320, &t10, {255,255,255,255});
+    }
+    else if(players->failuresP1 == 10)
+    {
+        GameOver = true;
+        outputText("Justin 1 Loose!", WINDOW_WIDTH/2 - 80, 320, &t10, {255,255,255,255});
+    }
+    else if(players->failuresP2 == 10)
+    {
+        GameOver = true;
+        outputText("Justin 2 Loose!", WINDOW_WIDTH/2 - 80, 320, &t10, {255,255,255,255});
+    }
 
     SDL_RenderPresent(renderer);
 

@@ -16,6 +16,8 @@ enum state
 {
     VALID,
     TARGET,
+    POINTJ1,
+    POINTJ2,
     INVALID,
     DESTROY
 };
@@ -36,6 +38,8 @@ private:
 public:
     position value;
     state actualState;
+    int flagPointP1, flagPointP2;
+    int flagFailureP1, flagFailureP2;
 
     Command(int value, const char* path);
     Command(int value, const char* path, const char* path2, const char* path3, const char* path4);
@@ -43,8 +47,8 @@ public:
     static Command* generateCommand();
     void render();
     void update(pthread_mutex_t mutex);
-    void target();
-    void destroy();
+    void changeImageSprite(const char* pathCommands);
+    void changeState();
 
 };
 
