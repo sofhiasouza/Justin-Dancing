@@ -54,7 +54,6 @@ void Command::changeState(){
     if(x >= (WINDOW_WIDTH/2)-64 && (x+64) < (WINDOW_WIDTH/2)+64 && actualState != INVALID) actualState = TARGET;
     if((x+64) >= (WINDOW_WIDTH/2)+64)
     {
-        std::cout << "nao entra qqui" << std::endl;
         actualState = INVALID;
     }
     if(x >= WINDOW_WIDTH)
