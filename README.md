@@ -1,7 +1,7 @@
 # Justin Dancing
-Idealizado e feito por Sofhia Souza, Matheus Luís Oliveira, Ana Vitória Freitas e Thiago Cardoso.
+Idealizado e desenvolvido por Sofhia Souza, Matheus Luís Oliveira, Ana Vitória Freitas e Thiago Cardoso, para o curso de Sistemas Operacionais I.
 
-![banner](images/banner.png)
+![banner](assets/banner.png)
 ### Sobre o jogo
 Jogo simples e iterativo baseado no jogo para console Just Dance.
 Foi projetado para ser executado em sistemas Linux e utiliza as bibliotecas [SDL2](https://www.libsdl.org), [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/) e [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
@@ -29,7 +29,7 @@ Para compilar basta ir na raíz do projeto, onde o arquivo `Makefile` está e ut
  
 Uma janela parecida com a seguinte deverá aparecer: 
 
-![tela](images/tela.png)
+![tela](assets/tela.png)
 
 #### Como jogar?
 Conforme o jogo roda, setas vermelhas (mostradas na imagem acima) irão aparecer aleatoriamente, e o objetivo é tentar acertá-las com as teclas correspondentes no seu teclado a medida que elas ficam entre as duas barras indicadas. As teclas do jogador 1 são as teclas W(para cima), S (para baixo), A (para a esquerda) e D (para a direita). As teclas do jogador 2 são as teclas de setas do teclado. Vence o jogador que obtiver maior pontuação.
