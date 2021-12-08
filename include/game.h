@@ -23,6 +23,7 @@ private:
     list<Command*>::iterator targetCommandIterator;
 
     TTF_Font *font;
+    SDL_Texture* t1, *t2, *t3, *t4, *t5, *t6, *t7, *t8, *t9;
 
 public:
     Sprite* environment;
@@ -36,7 +37,7 @@ public:
     Game();
     ~Game();
     
-    void outputText(string text, int posX, int posY);
+    void outputText(string text, int posX, int posY, SDL_Texture **t);
 
     void init(const char* title, int width, int height);
     void handleEvent();

@@ -56,8 +56,12 @@ void Game::init(const char *title, int width, int height){
     }
 }
 
-void Game::outputText(string text, int posX, int posY)
+void Game::outputText(string text, int posX, int posY, SDL_Texture **texture)
 {   
+    if (*texture != nullptr) {
+        SDL_DestroyTexture(*texture);
+        *texture = nullptr;
+    }
     SDL_Color color = {255,255,255,255};
 
     // Criando textura a partir da fonte e do texto dado
@@ -67,8 +71,8 @@ void Game::outputText(string text, int posX, int posY)
         exit(-1);
     }
 
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, text_surface);
-    if (texture == nullptr){
+    *texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+    if (*texture == nullptr){
         std::cerr << "Unable to create texture from rendered text! SDL Error: " << SDL_GetError() << std::endl;
         exit(-1);
     }
@@ -81,7 +85,7 @@ void Game::outputText(string text, int posX, int posY)
     SDL_Rect clip = {0, 0, src_width, src_height};
     SDL_Rect rect = {posX, posY, src_width, src_height};
 
-    SDL_RenderCopy(renderer, texture, &clip, &rect);
+    SDL_RenderCopy(renderer, *texture, &clip, &rect);
 }
 
 void Game::handleEvent(){
@@ -129,9 +133,16 @@ void Game::update(int frameCounter){
             (*commandsIterator)->update(mutex);
 
         // Exclui comandos que sairam da tela
-        if((*commands.begin())->actualState == DESTROY)
+        if((*commands.begin())->actualState == DESTROY){
+          Command *deletedCommand = *commands.begin(); 
           commands.erase(commands.begin()); 
+          delete deletedCommand;
+        }
   
+        if((*targetCommandIterator)->actualState == INVALID){
+            targetCommandIterator++;
+        }
+
         // Saindo da região crítica
         pthread_mutex_unlock(&mutex);
     } 
@@ -159,19 +170,19 @@ void Game::render(){
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     
-    outputText("PLAY! ", (WINDOW_WIDTH/2)-40, WINDOW_HEIGHT-100);
+    outputText("PLAY! ", (WINDOW_WIDTH/2)-40, WINDOW_HEIGHT-100, &t1);
     SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)-64, WINDOW_HEIGHT-70, (WINDOW_WIDTH/2)-64, WINDOW_HEIGHT-10);
     SDL_RenderDrawLine(renderer, (WINDOW_WIDTH/2)+64, WINDOW_HEIGHT-70, (WINDOW_WIDTH/2)+64, WINDOW_HEIGHT-10);
 
-    outputText("Justin 1 points: ", 70, 320);
-    outputText(to_string(players->pointsP1), 180, 350);
-    outputText("Remaining failures: ", 40, 400);
-    outputText(to_string(players->failuresP1), 180, 450);
+    outputText("Justin 1 points: ", 70, 320, &t2);
+    outputText(to_string(players->pointsP1), 180, 350, &t3);
+    outputText("Remaining failures: ", 40, 400, &t4);
+    outputText(to_string(players->failuresP1), 180, 450, &t5);
     
-    outputText("Justin 2 points: ", WINDOW_WIDTH-260, 320);
-    outputText(to_string(players->pointsP2), WINDOW_WIDTH-100, 350);
-    outputText("Remaining failures: ", WINDOW_WIDTH-300, 400);
-    outputText(to_string(players->failuresP2), WINDOW_WIDTH-100, 450);
+    outputText("Justin 2 points: ", WINDOW_WIDTH-260, 320, &t6);
+    outputText(to_string(players->pointsP2), WINDOW_WIDTH-100, 350, &t7);
+    outputText("Remaining failures: ", WINDOW_WIDTH-300, 400, &t8);
+    outputText(to_string(players->failuresP2), WINDOW_WIDTH-100, 450, &t9);
 
     for(commandsIterator = commands.begin(); commandsIterator != commands.end(); commandsIterator++)
         (*commandsIterator)->render();
