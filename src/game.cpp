@@ -138,6 +138,11 @@ void Game::update(int frameCounter){
           delete deletedCommand;
         }
 
+        if((*targetCommandIterator)->actualState == INVALID)
+        {        
+            targetCommandIterator++;
+        }  
+    
         // Saindo da região crítica
         pthread_mutex_unlock(&mutex);
     }
