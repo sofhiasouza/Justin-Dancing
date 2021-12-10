@@ -34,10 +34,6 @@ void *buttonCheckThread(void *arg){
             // Saindo da região crítica
             pthread_mutex_unlock(&game->mutex);
        }
-       else
-       {
-        
-       }
 
         //Duração do frame
         unsigned int threadFrameTime = SDL_GetTicks() - threadFrameStart;
